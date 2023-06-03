@@ -1,13 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import { List, ContactItem, DeleteButton } from './ContactList.styled';
+import { remove } from 'redux/phonebook/phonebook-reducer';
 
-function ContactList ({  onFilter, onDelete }) {
-  const filteredContacts = onFilter();
+function ContactList () {
+  const contacts = useSelector(state => state.contacts);
+  const filter = useSelector(state => state.filter);
+
+  const dispatch = useDispatch();
+  const onDelete = id => dispatch(remove(id));
 
   return (
     <List>
-      {filteredContacts.map(({ name, number, id }) => {
+      {contacts
+      .filter(contact => {
+        return contact.name.toLowerCase().includes(filter.toLowerCase());
+      }).map(({ name, number, id }) => {
         return (
           <ContactItem key={id}>
           <span>{name} :</span>

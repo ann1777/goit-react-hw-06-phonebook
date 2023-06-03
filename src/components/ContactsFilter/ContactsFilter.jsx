@@ -1,10 +1,14 @@
 import React from 'react';
 import { Input, FilterWrapper } from './ContactsFilter.styled';
+import { useSelector, useDispatch } from 'react-redux';
+import actions from 'redux/phonebook/phonebook-actions';
 import PropTypes from 'prop-types';
 
-function ContactsFilter ({ onFilter, filter }) {
+function ContactsFilter () {
+  const filter = useSelector(state => state.filter);
+  const dispatch = useDispatch();
   const onFilterChange = e => {
-    onFilter(e.target.value);
+    dispatch(actions.onFilter(e.target.value));
   };
 
   return (
@@ -25,8 +29,7 @@ function ContactsFilter ({ onFilter, filter }) {
 
 
 ContactsFilter.propTypes = {
-  onFilter: PropTypes.func.isRequired,
-  filter: PropTypes.string.isRequired,
+  onFilterChange: PropTypes.func.isRequired,
 };
 
 export default ContactsFilter;

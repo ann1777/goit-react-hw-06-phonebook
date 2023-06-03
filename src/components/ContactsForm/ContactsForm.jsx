@@ -1,5 +1,7 @@
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types'
+import { useSelector, useDispatch } from 'react-redux';
+import { add } from 'redux/phonebook/phonebook-reducer';
 
 import {
   Form,
@@ -10,18 +12,24 @@ import {
   ErrorMessage,
 } from './ContactsForm.styled';
 
-function ContactsForm({ contacts, onSubmit }) {
+function ContactsForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
+  const contacts = useSelector(state => state.contacts);
+
+  const dispatch = useDispatch();
+  const onSubmit = (userName, number) =>
+    dispatch(add({userName, number}));
+
   const onNameChange = e => {
-    console.log(e.target.value)
-    setName(e.target.value);
+    const { name } = e.currentTarget;
+    setName(name);
   };
 
   const onInputChange = e => {
-    console.log(e.target.value)
-    setNumber(e.target.value);
+    const { value } = e.currentTarget;
+    setNumber(value);
   };
 
   const handleSubmit = () => {
