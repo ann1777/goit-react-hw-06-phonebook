@@ -15,4 +15,8 @@ const remove = createAction('phonebook/remove');
 
 const changeFilter = createAction('phonebook/changeFilter');
 
-export default { add, remove, changeFilter };
+const actions = { add, remove, changeFilter };
+
+export default actions;
+
+
