@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types'
+import { nanoid } from 'nanoid';
 import { useSelector, useDispatch } from 'react-redux';
-import { add } from 'redux/phonebook/phonebook-reducer';
 
 import {
   Form,
@@ -19,28 +18,26 @@ function ContactsForm() {
   const contacts = useSelector(state => state.contacts);
 
   const dispatch = useDispatch();
-  const onSubmit = (userName, number) =>
-    dispatch(add({userName, number}));
 
   const onNameChange = e => {
-    const { name } = e.currentTarget;
+    const { name } = e.target.value;
     setName(name);
   };
 
   const onInputChange = e => {
-    const { value } = e.currentTarget;
+    const { value } = e.target.value;
     setNumber(value);
   };
 
-  const handleSubmit = () => {
-    if (
-      contacts.find(el => el.name.toLowerCase() === name.toLowerCase())
-    ) {
-      return alert(`${name} is already in contacts.`);
-    }
-    onSubmit(name, number);
-    setName('');
-    setNumber('');
+  const handleSubmit = e => {
+    e.preventDefault();
+    const newContact = {
+      id: nanoid(),
+      name: e.target.elements.name.value,
+      number: e.target.elements.number.value,
+    };
+    dispatch(contacts.add(newContact));
+    e.target.reset();
   };
 
   return (
@@ -67,7 +64,7 @@ function ContactsForm() {
             name="number"
             placeholder="tel number"
             onChange={onInputChange}
-            value={number.replace(/(\d{3})(\d{2})(\d{2})/, '$1-$2-$3')}
+            value={number}
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
@@ -79,11 +76,5 @@ function ContactsForm() {
     </>
   );
 }
-
-ContactsForm.propType = {
-  newContact: PropTypes.func.isRequired,
-  contacts: PropTypes.array.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-};
 
 export default ContactsForm;
