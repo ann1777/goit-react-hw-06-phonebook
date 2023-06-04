@@ -4,14 +4,25 @@ export const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
     contacts: [],
-    filter: ""
+    filter: '',
   },
   reducers: {
-    add: (state, {payload}) => (state = state.contacts.push(payload)),
+    add: {
+      reducer(state, {payload}) {
+        const isPresent = state.contacts.find(
+          contact =>
+            contact.name.toLowerCase() === payload.name.toLowerCase());
+            if(isPresent) {
+              alert(`${payload.name} is already in contacts`);
+              return;
+            } else {
+              state.contacts.push(payload);
+            }
+        },
+    },
     remove: (state, { payload }) => 
-      (state.data = state.contacts.filter(({ id }) => id !== payload)),
-    filter: (state, { payload }) =>
-      (state.data = state.contacts.filter(({ name }) => name === payload))  
+      (state.contacts = state.contacts.filter(({ id }) => id !== payload)),
+    setFilter: (state, { payload }) => state.data = state.contacts.filter(({name}) => name === payload),  
   },
 })
 

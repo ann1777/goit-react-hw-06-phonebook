@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { add } from 'redux/phonebook/phonebookSlice';
 
 import {
   Form,
@@ -14,19 +15,16 @@ import {
 function ContactsForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const dispatcher = useDispatch();
 
-  const contacts = useSelector(state => state.contacts);
-
-  const dispatch = useDispatch();
+  // const contacts = useSelector(state => state.contacts);
 
   const onNameChange = e => {
-    const { name } = e.target.value;
-    setName(name);
+    setName(e.target.value);
   };
 
   const onInputChange = e => {
-    const { value } = e.target.value;
-    setNumber(value);
+    setNumber(e.target.value);
   };
 
   const handleSubmit = e => {
@@ -36,7 +34,7 @@ function ContactsForm() {
       name: e.target.elements.name.value,
       number: e.target.elements.number.value,
     };
-    dispatch(contacts.add(newContact));
+    dispatcher(add(newContact));
     e.target.reset();
   };
 
@@ -50,7 +48,7 @@ function ContactsForm() {
             name="name"
             placeholder="name"
             onChange={onNameChange}
-            value={name}
+            value={name || ''}
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
@@ -64,7 +62,7 @@ function ContactsForm() {
             name="number"
             placeholder="tel number"
             onChange={onInputChange}
-            value={number}
+            value={number || ''}
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
