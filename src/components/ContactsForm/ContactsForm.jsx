@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { add } from 'redux/phonebook/phonebookSlice';
+
 
 import {
   Form,
@@ -12,20 +13,25 @@ import {
   ErrorMessage,
 } from './ContactsForm.styled';
 
+
 function ContactsForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatcher = useDispatch();
 
-  // const contacts = useSelector(state => state.contacts);
+
+  const contacts = useSelector(state => state.contacts);
+
 
   const onNameChange = e => {
     setName(e.target.value);
   };
 
+
   const onInputChange = e => {
     setNumber(e.target.value);
   };
+
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -34,9 +40,13 @@ function ContactsForm() {
       name: e.target.elements.name.value,
       number: e.target.elements.number.value,
     };
+    if (contacts.contacts.find(contact => contact.name === newContact.name)) {
+      return alert(`${newContact.name} is already in contacts.`);
+    }
     dispatcher(add(newContact));
     e.target.reset();
   };
+
 
   return (
     <>

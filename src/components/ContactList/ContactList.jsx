@@ -4,16 +4,15 @@ import { List, ContactItem, DeleteButton } from './ContactList.styled';
 import { remove } from 'redux/phonebook/phonebookSlice';
 
 function ContactList() {
-  const contacts = useSelector(state => state.contacts.data);
-  const filter = useSelector(state => state.filter);
+  const contacts = useSelector(state => state.contacts.contacts);
+  const filter = useSelector(state => state.contacts.filter);
   const dispatcher = useDispatch();
   const onDelete = id => dispatcher(remove(id));
 
   return (
     <List>
-      {contacts.filter(contact => {
-           return contact.name === filter;
-        })    
+      {contacts
+        .filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()))
         .map(({ id, name, number }) => {
           return (
             <ContactItem key={id}>
