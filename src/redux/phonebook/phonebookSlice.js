@@ -7,31 +7,25 @@ export const contactsSlice = createSlice({
     filter: '',
   },
   reducers: {
-    add: {
-      reducer(state, { payload }) {
-        const isPresent = state.contacts.find(
-          contact => contact.name.toLowerCase() === payload.name.toLowerCase()
-        );
-        if (isPresent) {
-          alert(`${payload.name} is already in contacts`);
-          return;
-        } else {
-          state.contacts.push(payload);
-        }
-      },
+    add: (state, { payload }) => {
+      const isPresent = state.contacts.find(
+        contact => contact.name.toLowerCase() === payload.name.toLowerCase()
+      );
+      if (isPresent) {
+        alert(`${payload.name} is already in contacts`);
+        return;
+      } else {
+        state.contacts.push(payload);
+      }
     },
-    remove: {
-      reducer(state, { payload }) {
-        state.contacts = state.contacts.filter(({ id }) => id !== payload);
-      },
+    remove: (state, { payload }) => {
+      state.contacts = state.contacts.filter(({ id }) => id !== payload);
     },
-    filtered: {
-      reducer(state, { payload }) {
-        state.data = state.contacts.filter(({ name }) => name === payload);
-      },
+    setFilter: (state, { payload }) => {
+      state.filter = payload;
     },
   },
 });
 
 export const contactsReducer = contactsSlice.reducer;
-export const { add, remove, filtered } = contactsSlice.actions;
+export const { add, remove, setFilter } = contactsSlice.actions;
