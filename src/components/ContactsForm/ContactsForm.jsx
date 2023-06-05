@@ -40,7 +40,7 @@ function ContactsForm() {
       name: e.target.elements.name.value,
       number: e.target.elements.number.value,
     };
-    if (contacts.contacts.find(contact => contact.name === newContact.name)) {
+    if (contacts.contacts.find(contact => contact.name.toLowerCase() === newContact.name.toLowerCase())) {
       return alert(`${newContact.name} is already in contacts.`);
     }
     dispatcher(add(newContact));
