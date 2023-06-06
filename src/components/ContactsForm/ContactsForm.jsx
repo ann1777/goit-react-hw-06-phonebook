@@ -44,7 +44,8 @@ function ContactsForm() {
       return alert(`${newContact.name} is already in contacts.`);
     }
     dispatcher(add(newContact));
-    e.target.reset();
+    setName('');
+    setNumber('');
   };
 
 
